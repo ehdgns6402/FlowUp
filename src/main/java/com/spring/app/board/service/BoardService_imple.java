@@ -654,6 +654,13 @@ public class BoardService_imple implements BoardService {
 		List<PostVO> list = dao.selectAllPostMain(paraMap);
 		return list;
 	}
+
+	// 게시판 검색
+	@Override
+	public List<PostVO> searchBoard(String searchWord) {
+		List<PostVO> list = dao.searchBoard(searchWord);
+		return list;
+	}
 	
 	
 	

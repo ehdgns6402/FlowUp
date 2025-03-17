@@ -53,15 +53,6 @@ table.approve_modal_info textarea {
 	width: 70%;
 }
 
-/*  */
-button.reject_btn,
-button.approve_btn {
-	padding: 2px;
-	font-size: 20px;
-	background-color: white;
-	border: solid 0.5px gray;
-	border-radius: 3px;
-}
 
 div.draftForm {
 	width: 70%;

@@ -526,6 +526,17 @@ public class DocumentService_imple implements DocumentService {
 	}
 
 
+	// 전자결재 통합검색 메인
+	@Override
+	public List<DocumentVO> searchDocument(Map<String, String> hashMap) {
+		List<DocumentVO> list = mapper_dao.searchDocument(hashMap);
+		return list;
+	}
+
+
+	
+
+
 	
 
 

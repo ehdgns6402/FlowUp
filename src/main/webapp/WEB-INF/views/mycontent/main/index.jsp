@@ -37,10 +37,38 @@ tr.tbodyTr:nth-child(even){
 	<div id="assetModalBg" class="modal_bg"></div>
 	<div class="modal_container">
 
-		<div style="padding: var(--size24)">
-			<form name="addReserFrm" enctype="multipart/form-data">
-               ss
-            </form>
+		<div style="padding: var(--size24);">
+			
+               <div class="search-wrapper">
+				    <div class="input-holder">
+				        <input type="text" class="search-input" placeholder="검색어를 입력해주세요..." />
+				        <button class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
+				    </div>
+				    <span class="close" onclick="searchToggle(this, event);"></span>
+				</div>
+           
+            
+            <div style="margin-top:20%">
+            	<div>
+            		<ul class="topBar">
+            			<li class="selectLi"><div>통합검색</div></li>
+            			<li><div>메일</div></li>
+            			<li><div>전자결재</div></li>
+            			<li><div>캘린더</div></li>
+            			<li><div>게시판</div></li>
+            		</ul>
+            	</div>
+            	
+            	
+            	<div class="search_contents">
+            		<div class="search_contents_inner">
+            		
+            		</div>
+            	</div>
+            	
+            </div>
+            
+            
 		</div>
 		
     </div>
@@ -439,7 +467,7 @@ tr.tbodyTr:nth-child(even){
     // =========== 주소록 모달 =========== //
     
     
-    
+    // =========== ip 모달 =========== //
     $('.ipBtn').click(e=>{
     	$('.ipModal').fadeIn();
     	$('#assetModalBg').fadeIn();
@@ -450,17 +478,18 @@ tr.tbodyTr:nth-child(even){
     	$('.ipModal').fadeOut();
     	$('#assetModalBg').fadeOut();
     });
+ 	// =========== ip 모달 =========== //
     
     
-    
+ 	// =========== 검색창 모달 =========== //
     $('.searchbox').click(e=>{
 
         $('.modal_bg').fadeIn();
         $('.modal_container').css({
-            'width': '70%'
+            'width': '50%'
         })
   
-    }) // end of $('#writePostBtn').click(e=>{})-----------
+    })
 
     $('.modal_bg:not(.modal_container)').click(e=>{
 
@@ -474,6 +503,62 @@ tr.tbodyTr:nth-child(even){
         })
 
     })
+    // =========== 검색창 모달 =========== //
+    
+    
+    
+    
+    // =========== 검색 아이콘 =========== //
+    function searchToggle(obj, evt){
+    var container = $(obj).closest('.search-wrapper');
+        if(!container.hasClass('active')){
+            container.addClass('active');
+            evt.preventDefault();
+            
+        }
+        else if(container.hasClass('active') && $(obj).closest('.input-holder').length == 0){
+            container.removeClass('active');
+            // clear input
+            container.find('.search-input').val('');
+        }
+        else if(container.hasClass('active')){
+        	// alert('active 있음')
+        	
+        	if($('input.search-input').val() == ''){
+        		alert('검색어를 입력해주세요.')
+        	}
+        	else {
+        		$('.search-wrapper').css({
+        			'top':'12%'
+        		})
+        		$('.topBar').css({
+        			'width':'100%'
+        		})
+        		
+        		
+        		setInterval((e) => 
+        		$('.search_contents').css({
+        			'display':'block'
+        		}), 1000);
+        		
+        		setInterval((e) => 
+        		$('.search_contents').css({
+        			'height':'600px'
+        		}), 1500);
+        		
+        		
+        		searchMail(); // ajax 시작!
+        		searchBoard();		// 게시판
+        		searchDocument();	// 전자결재
+        		searchCalendar();	// 캘린더
+        	}
+        	
+        }
+	}	
+ 	
+ 	
+ 	
+ 	// =========== 검색 아이콘 =========== //
     
     
     // ========================= 본격적인 메인페이지 ajax 함수들 시작 ========================= //
@@ -532,7 +617,102 @@ tr.tbodyTr:nth-child(even){
     } // end of function addrModal(){})---------------
     
     
+    let = v_html = ``;
     
+ 	// === 메일 검색 === //
+    function searchMail() {
+    	$.ajax({
+	    	url:"<%=ctxPath%>/searchMail",
+	    	data: {"searchWord": $('input.search-input').val() },
+	    	type:"get",
+	    	dataType:"json",
+	    	success:function(json){
+	    		console.log("메일 검색 확인 : "+JSON.stringify(json))
+	    		
+	    		
+	    		
+	    		
+	    		
+	    	},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+    	})
+    }
+ 	// === 메일 검색 === //
+ 	
+ 	
+ 	
+ 	
+ 	// === 게시판 검색 === //
+    function searchBoard() {
+    	$.ajax({
+	    	url:"<%=ctxPath%>/searchBoard",
+	    	data: {"searchWord": $('input.search-input').val() },
+	    	type:"get",
+	    	dataType:"json",
+	    	success:function(json){
+	    		console.log("게시판 검색 확인 : "+JSON.stringify(json))
+	    		
+	    	},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+    	})
+    }
+ 	// === 게시판 검색 === //
+ 	
+ 	
+ 	
+ 	
+ 	// === 전자결재 검색 === //
+    function searchDocument() {
+    	$.ajax({
+	    	url:"<%=ctxPath%>/searchDocument",
+	    	data: {"searchWord": $('input.search-input').val() },
+	    	type:"get",
+	    	dataType:"json",
+	    	success:function(json){
+	    		console.log("전자결재 검색 확인 : "+JSON.stringify(json))
+	    		
+	    	},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+    	})
+    }
+ 	// === 전자결재 검색 === //
+ 	
+ 	
+ 	
+ 	
+ 	// === 캘린더 검색 === //
+    function searchCalendar() {
+    	$.ajax({
+	    	url:"<%=ctxPath%>/searchCalendar",
+	    	data: {"searchWord": $('input.search-input').val() },
+	    	type:"get",
+	    	dataType:"json",
+	    	success:function(json){
+	    		console.log("캘린더 검색 확인 : "+JSON.stringify(json))
+	    		
+	    	},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+    	})
+    }
+ 	// === 캘린더 검색 === //
+ 	
+ 	
+    
+    
+    
+ 	
+ 	
+ 	
+ 	
+ 	
     function selectMail(){
 	    $.ajax({
 	    	url:"<%=ctxPath%>/mail/selectMail",
@@ -557,7 +737,15 @@ tr.tbodyTr:nth-child(even){
 			}
 	    })
     }
-    
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
     
     // ======== 비행기 버튼 모션 ======== //
     $(document).ready(function() {

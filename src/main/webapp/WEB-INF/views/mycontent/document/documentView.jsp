@@ -180,8 +180,8 @@ String ctxPath = request.getContextPath();
 				</tbody>
 			</table>
 			<div class="mt-5 text-right">
-				<button id="execute_btn">승인</button>
-				<button onclick="close_modal()" class="approve_btn ml-3">취소</button>
+				<button id="execute_btn" class="btn btn-outline-primary btn-sm mr-2">승인</button>
+				<button onclick="close_modal()" class="approve_btn btn btn-outline-danger btn-sm">취소</button>
 			</div>
 		</div>
 	</div>
@@ -208,8 +208,8 @@ String ctxPath = request.getContextPath();
 						</c:if>
 						<c:if test="${approval.approvalStatus eq 0 && sessionScope.loginuser.employeeNo eq approval.fk_approver && document.status ne 2 && document.temp ne 1}">
 						<%-- 내 결재 차례인데 반려 처리 되지 않은 경우 --%>
-							<button id="approve_btn" class="doc_btn">결재</button>
-							<button id="reject_btn" class="doc_btn">반려</button>
+							<button id="approve_btn" class="btn btn-outline-primary btn-sm">결재</button>
+							<button id="reject_btn" class="btn btn-outline-danger btn-sm">반려</button>
 						</c:if>
 					</c:if>
 					
@@ -467,7 +467,7 @@ String ctxPath = request.getContextPath();
 											<td>${expenseDetail.amount}</td>
 											<td>${expenseDetail.content}</td>
 											<td>${expenseDetail.note}</td>
-										<tr>
+										</tr>
 									</c:forEach>
 								</c:if>
 							</tbody>
@@ -510,7 +510,7 @@ String ctxPath = request.getContextPath();
 							</tbody>
 						</table>
 					</c:if>
-					<!-- 연장근무신청서 폼 -->
+					<!-- 업무기안 폼 -->
 					
 					
 					

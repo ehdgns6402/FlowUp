@@ -299,6 +299,35 @@
 	    AND <![CDATA[startdate <= to_date(#{enddate}, 'YYYY-MM-DD HH24:MISS')]]>
 	    AND <![CDATA[enddate >= to_date(#{startdate}, 'YYYY-MM-DD HH24:MISS')]]>
 	</select>
+	
+	
+	
+	
+	
+	<select id="searchCalendar" parameterType="HashMap" resultMap="scheduleListSearchWithPaging_Map">
+		select scheduleno 
+		     , startdate, enddate
+		     , smcatgoname, lgcatgoname, name
+		     , subject, content 
+		from 
+		(
+		    select  row_number() over(order by SD.scheduleno desc) as rno 
+		          , SD.scheduleno
+		          , to_char(SD.startdate, 'yyyy-mm-dd hh24:mi') as startdate
+		          , to_char(SD.enddate, 'yyyy-mm-dd hh24:mi') as enddate
+		          , SC.smcatgoname, LC.lgcatgoname, M.name 
+		          , SD.subject, SD.content 
+		    from tbl_calendar_schedule SD 
+		    JOIN tbl_employee M 
+		    ON SD.fk_employeeNo = M.employeeNo
+		    JOIN tbl_calendar_small_category SC 
+		    ON SD.fk_smcatgono = SC.smcatgono
+		    JOIN tbl_calendar_large_category LC 
+		    ON SD.fk_lgcatgono = LC.lgcatgono 
+		    where SD.fk_employeeNo = #{employeeno}
+		) V 
+		WHERE lower(subject) like '%'||lower(#{searchWord})||'%'
+	</select>
 
 
 	

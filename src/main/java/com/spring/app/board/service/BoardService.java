@@ -151,6 +151,9 @@ public interface BoardService {
 
 	// 게시판 메인 페이지에 뿌려줄 모든 게시글 조회 
 	List<PostVO> selectAllPostMain(Map<String, String> paraMap);
+
+	// 게시판 검색
+	List<PostVO> searchBoard(String searchWord);
 	
 
 	

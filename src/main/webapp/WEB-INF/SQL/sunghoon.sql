@@ -381,3 +381,38 @@ from TBL_CALENDAR_SCHEDULE;
 
 insert into TBL_CALENDAR_SCHEDULE(SCHEDULENO, STARTDATE, ENDDATE, SUBJECT, COLOR, FK_SMCATGONO, FK_LGCATGONO, FK_EMPLOYEENO)
 values(seq_scheduleno.nextval, #{starDate}, #{endDate}, '연차', '#009900', #{SMCATGONO}, 1, #{fk_employeeNo});
+
+
+      select sum(useamount) as usedAnnual
+      from tbl_document D join tbl_draft_annual A
+      on D.DOCUMENTNO = A.DOCUMENTNO
+      where fk_employeeno = to_number('100014')
+      and to_char(startdate, 'yyyy') = '2025'
+      and D.status = 1;
+      group by to_char(startdate, 'yyyy');
+
+
+
+        select occurannual + overannual - addannual - (
+        
+			select sum(useamount) as usedAnnual
+			from tbl_document D join tbl_draft_annual A
+			on D.DOCUMENTNO = A.DOCUMENTNO
+			where fk_employeeno = to_number('100014')
+			and to_char(startdate, 'yyyy') = '2025'
+			and D.status = 1
+			group by to_char(startdate, 'yyyy')	) as totalAmount
+	
+		from tbl_annual
+		where fk_employeeNo = '100014' and year = '2025'
+		
+		UNION ALL
+		
+		select 0 AS totalAmount
+		from dual
+		where not exists
+		(
+			select occurannual + overannual - addannual as totalAmount
+			from tbl_annual
+			where fk_employeeNo = '100014' and year = '2025'
+		);

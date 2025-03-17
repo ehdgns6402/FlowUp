@@ -789,6 +789,38 @@
 
 
 
+	<select id="searchBoard" parameterType="String" resultMap="selectPostBoardGroup_Map">
+		SELECT 
+		    V.postNo, V.fk_boardNo, V.fk_employeeNo, V.name, 
+			case when length( V.subject) > 40 then substr(subject, 0, 40) || '...' else subject end as subject, 
+			CASE 
+		        WHEN LENGTH(REGEXP_REPLACE(V.content, '&lt;[^>]*>', '')) > 80 
+		        THEN SUBSTR(REGEXP_REPLACE(V.content, '&lt;[^>]*>', ''), 1, 80) || '...' 
+		        ELSE REGEXP_REPLACE(V.content,'&lt;[^>]*>', '') 
+		    END AS content, 
+		    V.readCount, V.regDate, V.commentCount, V.allowComments,
+		    V.isNotice, V.noticeEndDate, V.likeCount,
+		    V.boardNo, V.boardName, V.createdBy, V.currentDate,
+		    V.positionName
+		FROM (
+		    SELECT  
+		        P.postNo, P.fk_boardNo, P.fk_employeeNo, P.name, P.subject, P.content, 
+		        P.readCount, P.regDate, P.commentCount, P.allowComments,
+		        P.isNotice, P.noticeEndDate, P.likeCount,
+		        B.boardNo, B.boardName, B.createdBy, 
+		        SYSDATE AS currentDate,
+		        PS.positionName,
+		        ROW_NUMBER() OVER (ORDER BY P.postNo DESC) AS rno
+		    FROM tbl_post P
+		    JOIN tbl_board B ON P.fk_boardNo = B.boardNo
+		    JOIN tbl_employee E ON P.fk_employeeNo = E.employeeNo
+		    JOIN tbl_position PS ON E.FK_positionNo = PS.positionNo
+		) V
+		 WHERE lower(subject) like '%'||lower('영업')||'%' 
+	</select>
+
+
+
 
 </mapper>
 

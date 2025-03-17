@@ -261,13 +261,13 @@ div.hoverDiv:hover {
 						
 						html += `<tr>
 									<td style="text-align: center; vertical-align:middle">\${item.workRange}</td>
-									<td style="text-align: center; vertical-align:middle">\${Number(item.monthSalary).toLocaleString('en')}</td>
+									<td style="text-align: center; vertical-align:middle">\${Number(item.monthSalary).toLocaleString('en')} 원</td>
 									<td style="text-align: center; vertical-align:middle">\${item.total_overtime}</td>
-									<td style="text-align: center; vertical-align:middle">\${Number(item.overtimePay).toLocaleString('en')}</td>
+									<td style="text-align: center; vertical-align:middle">\${Number(item.overtimePay).toLocaleString('en')} 원</td>
 									<td style="text-align: center; vertical-align:middle">\${item.incentiveReason}</td>
-									<td style="text-align: center; vertical-align:middle">\${Number(item.incentive).toLocaleString('en')}</td>
-									<td style="text-align: center; vertical-align:middle">\${totalPay.toLocaleString('en')}</td>
-									<td style="text-align: center; vertical-align:middle">\${item.bank}</td>
+									<td style="text-align: center; vertical-align:middle">\${Number(item.incentive).toLocaleString('en')} 원</td>
+									<td style="text-align: center; vertical-align:middle">\${totalPay.toLocaleString('en')} 원</td>
+									<td style="text-align: center; vertical-align:middle">\${item.bank}</td> 
 									<td style="text-align: center; vertical-align:middle">\${item.account}</td>
 									<td style="text-align: center; vertical-align:middle">\${item.paymentDate}</td>
 								  </tr>`;

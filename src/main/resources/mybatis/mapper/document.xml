@@ -605,7 +605,16 @@
 	
 	<!-- 휴가신청서 잔여 연차 가져오기 -->
 	<select id="getAnnual" parameterType="HashMap" resultType="Integer">
-		select occurannual + overannual - addannual as totalAmount
+		select occurannual + overannual - addannual - (
+        
+			select sum(useamount) as usedAnnual
+			from tbl_document D join tbl_draft_annual A
+			on D.DOCUMENTNO = A.DOCUMENTNO
+			where fk_employeeno = to_number(#{employeeNo})
+			and to_char(startdate, 'yyyy') = #{year}
+			and D.status = 1
+			group by to_char(startdate, 'yyyy')	) as totalAmount
+	
 		from tbl_annual
 		where fk_employeeNo = #{employeeNo} and year = #{year}
 		
@@ -719,6 +728,30 @@
 		select AMOUNT, to_char(USEDATE, 'yyyy-mm-dd') as useDate, TYPE, CONTENT, NOTE
 		from tbl_expense_detail
 		where fk_documentno = '${documentNo}'
+	</select>
+	
+	
+	
+	<!-- 전자결재 통합검색 메인 -->
+	<select id="searchDocument" resultType="DocumentVO" parameterType="HashMap">
+		select approvalNo, fk_approver, fk_documentNo, approvalOrder, fk_employeeNo, subject, draftDate
+		     , documentType, name, documentNo, approvalDate , status, urgent
+		from
+		(
+		    select rownum as rno, approvalNo, fk_approver, fk_documentNo, approvalOrder, fk_employeeNo, subject, to_char(draftDate, 'yyyy-mm-dd') as draftDate
+		         , documentType, name, documentNo, to_char(approvalDate, 'yyyy-mm-dd') as approvalDate , D.status as status, urgent
+		    from
+		    (
+		        select  approvalNo, fk_approver, fk_documentNo, approvalOrder
+		        from tbl_approval
+		        where APPROVALSTATUS != 0 and fk_approver = #{employeeno}
+		    ) A JOIN tbl_document D
+		    ON fk_documentNo = documentNo
+		    JOIN tbl_employee
+		    ON fk_employeeNo = employeeNo
+		    where temp = 0 and lower(subject) like '%'||lower(#{searchWord})||'%' 
+		    order by documentNo desc
+		)
 	</select>
 	
 </mapper>

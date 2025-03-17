@@ -308,6 +308,14 @@ public class MailService_imple implements MailService {
  		List<Map<String, String>> map = mailDAO.getMailCnt(employeeno);
  		return map;
  	}
+
+
+ 	// 이메일 검색
+	@Override
+	public List<MailVO> searchMail(String searchWord) {
+		List<MailVO> map = mailDAO.searchMail(searchWord);
+		return map;
+	}
     
     
 

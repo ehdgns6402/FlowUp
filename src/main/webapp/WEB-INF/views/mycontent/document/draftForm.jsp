@@ -752,7 +752,7 @@
 	
 	<%-- 지출 내역 추가하기 --%>
 	function add_expense_detail() {
-		let no = $("tbody.expense_detail tr").length/2;
+		let no = $("tbody.expense_detail tr").length;
 		if(no < 3) {
 			let html = `<tr>
 							<td><input type="date" class="useDate"	name="useDate\${no}" onkeydown="return false" style="width: 100%;"/></td>
@@ -760,7 +760,7 @@
 							<td><input type="number" class="amount" name="amount\${no}" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
 							<td><input type="text" class="content" name="content\${no}" style="width: 100%;"/></td>
 							<td><input type="text" class="note"	 name="note\${no}" style="width: 100%;"/></td>
-						<tr>`;
+						</tr>`;
 			
 			$("tbody.expense_detail").append(html);
 		}
@@ -771,8 +771,7 @@
 	
 	<%-- 지출 내역 삭제하기 --%>
 	function delete_expense_detail() {
-		if($("tbody.expense_detail").children().length > 2) {
-			$("tbody.expense_detail tr:last-child").remove();
+		if($("tbody.expense_detail").children().length > 1) {
 			$("tbody.expense_detail tr:last-child").remove();
 		}
 		else {
@@ -895,8 +894,8 @@
 			<div style="width: 40%;" >
 				<div id="approval_line_content" class="approval_line_modal_content">
 					<div>
-						<button type="button" id="btnShow" class="doc_btn">열기</button>
-						<button type="button" id="btnHide" class="doc_btn">닫기</button>
+						<button type="button" id="btnShow" class="btn btn-secondary btn-sm">열기</button>
+						<button type="button" id="btnHide" class="btn btn-secondary btn-sm">닫기</button>
 						<input type="text" name='member_name' placeholder="사원 검색" class="my-1"/>
 						<div id="jstree" style="overflow: scroll; max-height: 250px; border: solid 1px #333;"></div>
 					</div>
@@ -923,8 +922,8 @@
 			</div>
 		</div>
 		<div class="mt-1">
-			<button id="submit_approval_line" class="doc_btn">확인</button>
-			<button id="cancel_approval_line" class="doc_btn">취소</button>
+			<button id="submit_approval_line" class="btn btn-secondary btn-sm">확인</button>
+			<button id="cancel_approval_line" class="btn btn-secondary btn-sm">취소</button>
 		</div>
 	</div>
 		
@@ -933,23 +932,23 @@
 	<div class="m-3">
 		<c:if test="${requestScope.documentType == '휴가신청서'}">
 			<h3 class="mb-3">휴가신청서</h3>
-			<button class="doc_btn mr-3 mb-3" onclick="annualDraft()">결재요청</button>
+			<button class="btn btn-secondary btn-sm" onclick="annualDraft()">결재요청</button>
 		</c:if>
 		<c:if test="${requestScope.documentType == '연장근무신청서'}">
 			<h3 class="mb-3">연장근무신청서</h3>
-			<button class="doc_btn mr-3 mb-3" onclick="overtimeDraft()">결재요청</button>
+			<button class="btn btn-secondary btn-sm" onclick="overtimeDraft()">결재요청</button>
 		</c:if>
 		<c:if test="${requestScope.documentType == '지출품의서'}">
 			<h3 class="mb-3">지출품의서</h3>
-			<button class="doc_btn mr-3 mb-3" onclick="expenseDraft()">결재요청</button>
+			<button class="btn btn-secondary btn-sm" onclick="expenseDraft()">결재요청</button>
 		</c:if>
 		<c:if test="${requestScope.documentType == '업무기안'}">
 			<h3 class="mb-3">업무기안</h3>
-			<button class="doc_btn mr-3 mb-3" onclick="businessDraft()">결재요청</button>
+			<button class="btn btn-secondary btn-sm" onclick="businessDraft()">결재요청</button>
 		</c:if>
-		<button class="doc_btn mr-3" onclick="saveTemp()">임시저장</button>
+		<button class="btn btn-secondary btn-sm" onclick="saveTemp()">임시저장</button>
 		<!-- <button class="doc_btn mr-3">미리보기</button> -->
-		<button class="doc_btn" id="approval_line_btn">결재 정보</button>
+		<button class="btn btn-secondary btn-sm" id="approval_line_btn">결재 정보</button>
 	</div>
 	<div class="m-3 draftForm">
 		<form name="draftForm">
@@ -1338,13 +1337,26 @@
 							</tr>
 						</thead>
 						<tbody class="expense_detail">
-							<tr>
-								<td><input type="date" class="useDate" name="useDate0" onkeydown="return false" style="width: 100%;"/></td>
-								<td><input type="text" class="type" name="type0" style="width: 100%;"/></td>
-								<td><input type="number" class="amount" name="amount0" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
-								<td><input type="text" class="content" name="content0" style="width: 100%;"/></td>
-								<td><input type="text" class="note" name="note0" style="width: 100%;"/></td>
-							<tr>
+							<c:if test="${empty requestScope.expenseDetailList}">
+								<tr>
+									<td><input type="date" class="useDate" name="useDate0" onkeydown="return false" style="width: 100%;"/></td>
+									<td><input type="text" class="type" name="type0" style="width: 100%;"/></td>
+									<td><input type="number" class="amount" name="amount0" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
+									<td><input type="text" class="content" name="content0" style="width: 100%;"/></td>
+									<td><input type="text" class="note" name="note0" style="width: 100%;"/></td>
+								</tr>
+							</c:if>
+							<c:if test="${not empty requestScope.expenseDetailList}">
+								<c:forEach var="expenseDetail" items="${requestScope.expenseDetailList}">
+									<tr>
+										<td><input type="date" class="useDate" name="useDate0" 	value="${expenseDetail.useDate}" onkeydown="return false" style="width: 100%;"/></td>
+										<td><input type="text" class="type" name="type0" 		value="${expenseDetail.type}" style="width: 100%;"/></td>
+										<td><input type="number" class="amount" name="amount0" 	value="${expenseDetail.amount}" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
+										<td><input type="text" class="content" name="content0" 	value="${expenseDetail.content}" style="width: 100%;"/></td>
+										<td><input type="text" class="note" name="note0" 		value="${expenseDetail.note}" style="width: 100%;"/></td>
+									</tr>
+								</c:forEach>
+							</c:if>
 						</tbody>
 					</table>
 				</c:if>

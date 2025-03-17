@@ -104,6 +104,11 @@ public interface DocumentService {
 	// 지출 품의 상세 가져오기
 	List<Map<String, String>> expenseDetailList(Map<String, String> paraMap);
 
+	// 전자결재 통합검색 메인
+	List<DocumentVO> searchDocument(Map<String, String> hashMap);
+
+	
+
 	
 
 

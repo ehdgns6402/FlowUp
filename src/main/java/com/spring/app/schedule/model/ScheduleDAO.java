@@ -65,6 +65,10 @@ public interface ScheduleDAO {
 	// 해당날짜의 일정이 곂쳐있는 사람을 조회하는 기능
 	List<Map<String, String>> displayUserListSelect(Map<String, Object> paraMap);
 
+	List<Map<String, String>> searchCalendar(Map<String, String> hashMap);
+
+
+
 	
 	
 }

@@ -456,7 +456,32 @@
 		JOIN tbl_mail M ON R.fk_mailNo = M.mailNo
 		WHERE R.fk_employeeNo = #{employeeno} AND R.deleteSt = 0 AND M.READSTATUS = 1
 	</select>
+	
+	
+	<select id="searchMail" parameterType="String" resultMap="selectMailList_Map">
+		SELECT 
+	        M.mailNo,
+	        M.fk_employeeNo,
+	        M.subject,
+	        M.content,
+	        to_char(M.sendDate, 'yyyy-mm-dd hh24:mi') AS sendDate,
+	        M.readStatus,
+	        M.deleteStatus,
+	        M.saveStatus,
+	        M.importantStatus,
+	        E.employeeNo AS employeeNo,
+	        E.name AS name,
+	        F.fileSize 
+	    FROM tbl_mail M
+	    JOIN tbl_employee E ON M.fk_employeeNo = E.employeeNo
+	    LEFT JOIN tbl_mailFile F ON M.mailNo = F.fk_mailNo
+	    WHERE M.deleteStatus = 0 and lower(subject) like '%'||lower(#{searchWord})||'%' 
+	    ORDER BY M.mailNo DESC
+	</select>
 	<!-- ================= yh ================= -->
+
+
+
 
 
 
