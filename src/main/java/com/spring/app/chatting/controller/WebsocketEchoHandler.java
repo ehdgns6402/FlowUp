@@ -62,10 +62,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession wsession) throws Exception {
-		
-		String roomId = wsession.getUri().getQuery().split("=")[1]; // URL에서 roomId 추출
 
-		roomId = getRoomIdFromSession(wsession);
+	    String roomId = getRoomIdFromSession(wsession);
 	    roomSessions.computeIfAbsent(roomId, k -> new CopyOnWriteArrayList<>()).add(wsession);
 		
 		connectedUsers.add(wsession);
