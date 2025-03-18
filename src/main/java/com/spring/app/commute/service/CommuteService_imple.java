@@ -362,22 +362,27 @@ public class CommuteService_imple implements CommuteService {
 			bodyCell.setCellValue("00:00:00");
 			bodyCell.setCellStyle(infoStyle);
 			
-			if(dailyCommute.get("rest") == "0") {
+			if("1".equals(dailyCommute.get("overtimeYN"))) {
+				bodyCell = bodyRow.createCell(7);
+				bodyCell.setCellValue("초과근무 승인");
+				bodyCell.setCellStyle(infoStyle);
+			}
+			else if("0".equals(dailyCommute.get("rest"))) {
 				bodyCell = bodyRow.createCell(7);
 				bodyCell.setCellValue("-");
 				bodyCell.setCellStyle(infoStyle);
 			}
-			else if(dailyCommute.get("rest") == "1") {
+			else if("1".equals(dailyCommute.get("rest"))) {
 				bodyCell = bodyRow.createCell(7);
 				bodyCell.setCellValue("연차 사용");
 				bodyCell.setCellStyle(infoStyle);
 			}
-			else if(dailyCommute.get("rest") == "2") {
+			else if("2".equals(dailyCommute.get("rest"))) {
 				bodyCell = bodyRow.createCell(7);
 				bodyCell.setCellValue("오전 반차 사용");
 				bodyCell.setCellStyle(infoStyle);
 			}
-			else if(dailyCommute.get("rest") == "3") {
+			else if("3".equals(dailyCommute.get("rest"))) {
 				bodyCell = bodyRow.createCell(7);
 				bodyCell.setCellValue("오후 반차 사용");
 				bodyCell.setCellStyle(infoStyle);

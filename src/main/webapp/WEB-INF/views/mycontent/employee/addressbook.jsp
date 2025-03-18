@@ -179,7 +179,6 @@ $(document).ready(function() {
 			 
 			if(!bool){
 				$(e.target).next().show();
-				$(e.target).focus()
 			}
 			 
 			 else{
@@ -274,10 +273,10 @@ function view_address(fk_employeeNo) {
 		  		--%>
 		  		let v_html="";
 		  		
-		  		v_html += "<table class='addressbooktable'>"
-				    +	 "<thead>" 
+		  		v_html += "<table class='addressbooktable table table-hover table-striped'>"
+				    +	 "<thead style='color:#2985DB; font-size:14pt;'>" 
 					+		 "<tr>"
-					+			"<th class='thcss thcheck'><input type='checkbox'></th>"
+					+			"<th style='width:20px;' class='thcss thcheck'><input type='checkbox'></th>"
 					+			"<th class='thcss'><span class='tabletitle'>이름(표시명)</span></th>"
 					+			"<th class='thcss'><span class='tabletitle'>직위</span></th>"
 					+			"<th class='thcss'><span class='tabletitle'>이메일</span></th>"
@@ -286,7 +285,7 @@ function view_address(fk_employeeNo) {
 					+			"<th class='thcss'><span class='tabletitle'>회사</span></th>"
 					+			"<th class='thcss'><span class='tabletitle'>내선번호</span></th>"
 					+			"<th class='thcss'><span class='tabletitle'>그룹</span></th>"
-					+			"<th class='thcss'><span class='tabletitle'></span></th>"
+					+		"<th class='thcss'><span class='tabletitle'></span></th>"
 					+		  "</tr>"
 					+		"</thead>"		
 					+	"<tbody>";
@@ -303,7 +302,7 @@ function view_address(fk_employeeNo) {
 		  			  +		"<td class='tdcss'><span class='tabletitle' name='data_company'>"+json[i].COMPANY+"</span></td>"
 		  			  +		"<td class='tdcss'><span class='tabletitle' name='data_directcall'>"+json[i].DIRECTCALL+"</span></td>"
 		  			  +		"<td class='tdcss'><button class='insertGroupBtn' onclick='addgroup()'>+그룹추가하기</button></td>"
-		  			  +		"<td class='tdcss'><span class='tabletitle' id='bookmark'><i class='fa-regular fa-bookmark'></i></span></td>"
+		  			 +		"<td class='tdcss'><span class='tabletitle' id='bookmark'><i class='fa-regular fa-bookmark'></i></span></td>"
 		  			  + "</tr>";  	  			
 		  		}// end of for(let i = 0; i<json.length; i++){}
 		  	
@@ -362,16 +361,47 @@ function delete_address(){
 };// end of function delete_address(){};--------------------
 
 <%--
-function addgroup(){
+function addGroupOption(){
 	
 	//alert("그룹옵션 추가할게요~~");
+	
+	//alert("그룹옵션 추가할게요~~");
+	
+	//alert($("input#fk_employeeno").val());
+	
+	const g_fk_employee = $("input#fk_employeeno").val();
+	const groupname = $("input:text[name='groupname']").val();
+	
+	//alert(groupname)
+		
+	$.ajax({
+		
+		url:"<%= ctxpath%>/employee/addGroupOptionEnd",
+		type:"post",
+		data:{"g_fk_employee":g_fk_employee,"groupname":groupname},
+		dataType:"json",
+		success:function(json){
+			
+			if(json.n==1){
+				alert("옵션이 추가 되었습니다.");
+			}
+			else{
+				alert("옵션 추가가 실패되었습니다");
+			}
+			
+		},
+	 	 error: function(request, status, error){
+	 		 	alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	 	     }
+		
+	});// end of $.ajax({});--------------------------------------
 
 }
+
 --%>
 
 
 <%--
-
  function addGroupFinal(){
 	 	const fk_employeeno = $("input#fk_employeeno").val();
 		const groupNo = $("select.group_select").val();
@@ -380,7 +410,7 @@ function addgroup(){
 		const addressno = $("tr").find("input:checkbox[name='checkSelect']").val();
 		//alert(addressno);
 		
-		//alert("addressno:"+addressno+", fk_employeeno:"+fk_employeeno+", groupNo:"+groupNo);
+		alert("addressno:"+addressno+", fk_employeeno:"+fk_employeeno+", groupNo:"+groupNo);
 	
 		
 		$.ajax({
@@ -411,9 +441,9 @@ function addgroup(){
 	    });
 	   
  }// end of function addGroupFinal(){}-------------------------
+--%>
  
- 
-
+ <%--
 $("span#bookmark").click(function(e){
 	//alert("클릭");
 	

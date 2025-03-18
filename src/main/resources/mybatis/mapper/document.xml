@@ -24,7 +24,7 @@
 		    ON fk_employeeNo = employeeNo
 		    JOIN tbl_position
 		    ON fk_positionno = positionno
-		    where rn = 1 and fk_approver = #{employeeNo} and temp = 0 and D.status != 2
+		    where rn = 1 and fk_approver = to_number(#{employeeNo}) and temp = 0 and D.status != 2
 		    order by urgent desc, documentNo desc
 		)
 		where rownum between 1 and 5
@@ -38,7 +38,7 @@
 		(
 		    select rownum as rn, documentNo, subject, documentType, draftDate, status, urgent
 		    from tbl_document
-		    where fk_employeeNo = #{employeeNo} and status = 0 and temp = 0
+		    where fk_employeeNo = to_number(#{employeeNo}) and status = 0 and temp = 0
 		    order by documentNo desc
 		)
 		where rn BETWEEN 1 AND 5
@@ -52,7 +52,7 @@
 		(
 		    select rownum as rn, documentNo, subject, documentType, draftDate, status, urgent, approvalDate
 		    from tbl_document
-		    where fk_employeeNo = #{employeeNo} and status = 1 and temp = 0
+		    where fk_employeeNo = to_number(#{employeeNo}) and status = 1 and temp = 0
 		    order by documentNo desc
 		)
 		where rn BETWEEN 1 AND 5
@@ -71,7 +71,7 @@
 		ON fk_documentNo = documentNo
 		JOIN tbl_employee
 		ON fk_employeeNo = employeeNo
-		where rn = 1 and fk_approver = #{employeeNo} and temp = 0 and D.status != 2
+		where rn = 1 and fk_approver = to_number(#{employeeNo}) and temp = 0 and D.status != 2
 		order by urgent desc, documentNo desc
 	</select>
 	
@@ -88,7 +88,7 @@
 		ON fk_documentNo = documentNo
 		JOIN tbl_employee
 		ON fk_employeeNo = employeeNo
-		where rn != 1 and fk_approver = #{employeeNo} and temp = 0
+		where rn != 1 and fk_approver = to_number(#{employeeNo}) and temp = 0
 		order by urgent desc, documentNo desc
 	</select>
 	
@@ -105,7 +105,7 @@
 		ON fk_documentNo = documentNo
 		JOIN tbl_employee
 		ON fk_employeeNo = employeeNo
-		where rn = 1 and fk_approver = #{employeeNo} and temp = 0 and D.status != 2
+		where rn = 1 and fk_approver = to_number(#{employeeNo}) and temp = 0 and D.status != 2
 		<choose>
 			<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 		</choose>
@@ -135,7 +135,7 @@
 				ON fk_documentNo = documentNo
 				JOIN tbl_employee
 				ON fk_employeeNo = employeeNo
-				where rn = 1 and fk_approver = #{employeeNo} and temp = 0 and D.status != 2
+				where rn = 1 and fk_approver = to_number(#{employeeNo}) and temp = 0 and D.status != 2
 				<choose>
 					<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 				</choose>
@@ -161,7 +161,7 @@
 		ON fk_documentNo = documentNo
 		JOIN tbl_employee
 		ON fk_employeeNo = employeeNo
-		where rn != 1 and fk_approver = #{employeeNo} and temp = 0
+		where rn != 1 and fk_approver = to_number(#{employeeNo}) and temp = 0
 		<choose>
 			<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 		</choose>
@@ -189,7 +189,7 @@
 				ON fk_documentNo = documentNo
 				JOIN tbl_employee
 				ON fk_employeeNo = employeeNo
-				where rn != 1 and fk_approver = #{employeeNo} and temp = 0
+				where rn != 1 and fk_approver = to_number(#{employeeNo}) and temp = 0
 				<choose>
 					<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 				</choose>
@@ -207,12 +207,12 @@
 	<select id="myDocumentListCount_Search" parameterType="HashMap" resultType="Integer">
 		select count(*)
 		from tbl_document
-		where fk_employeeNo = #{employeeNo} and temp = 0
+		where fk_employeeNo = to_number(#{employeeNo}) and temp = 0
 		<choose>
 			<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 		</choose>
 		<choose>
-			<when test='status != ""'> and status = #{status} </when>
+			<when test='status != ""'> and status = to_number(#{status}) </when>
 		</choose>
 		<choose>
 			<when test='documentType != ""'> and documentType = #{documentType} </when>
@@ -230,12 +230,12 @@
 			(
 				select documentNo, subject, documentType, to_char(draftDate, 'yyyy-mm-dd') as draftDate, status, urgent, nvl(to_char(approvalDate, 'yyyy-mm-dd'), '-') as approvalDate
 				from tbl_document
-				where fk_employeeNo = #{employeeNo} and temp = 0
+				where fk_employeeNo = to_number(#{employeeNo}) and temp = 0
 				<choose>
 					<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 				</choose>
 				<choose>
-					<when test='status != ""'> and status = #{status} </when>
+					<when test='status != ""'> and status = to_number(#{status}) </when>
 				</choose>
 				<choose>
 					<when test='documentType != ""'> and documentType = #{documentType} </when>
@@ -251,7 +251,7 @@
 	<select id="tempListCount_Search" parameterType="HashMap" resultType="Integer">
 		select count(*)
 		from tbl_document
-		where fk_employeeNo = #{employeeNo} and temp = 1
+		where fk_employeeNo = to_number(#{employeeNo}) and temp = 1
 		<choose>
 			<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 		</choose>
@@ -271,7 +271,7 @@
 			(
 				select documentNo, subject, documentType, to_char(draftDate, 'yyyy-mm-dd') as draftDate, status, urgent
 				from tbl_document
-				where fk_employeeNo = #{employeeNo} and temp = 1
+				where fk_employeeNo = to_number(#{employeeNo}) and temp = 1
 				<choose>
 					<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 				</choose>
@@ -292,7 +292,7 @@
 		(
 		    select approvalNo, fk_approver, fk_documentNo, approvalOrder
 		    from tbl_approval
-		    where APPROVALSTATUS != 0 and fk_approver = #{employeeNo}
+		    where APPROVALSTATUS != 0 and fk_approver = to_number(#{employeeNo})
 		) A JOIN tbl_document D
 		ON fk_documentNo = documentNo
 		where temp = 0
@@ -300,7 +300,7 @@
 			<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 		</choose>
 		<choose>
-			<when test='status != ""'> and status = #{status} </when>
+			<when test='status != ""'> and status = to_number(#{status}) </when>
 		</choose>
 		<choose>
 			<when test='documentType != ""'> and documentType = #{documentType} </when>
@@ -314,28 +314,33 @@
 			 , documentType, name, documentNo, approvalDate , status, urgent
 		from
 		(
-			select rownum as rno, approvalNo, fk_approver, fk_documentNo, approvalOrder, fk_employeeNo, subject, to_char(draftDate, 'yyyy-mm-dd') as draftDate
-				 , documentType, name, documentNo, to_char(approvalDate, 'yyyy-mm-dd') as approvalDate , D.status as status, urgent
+			select rownum as rno, approvalNo, fk_approver, fk_documentNo, approvalOrder, fk_employeeNo, subject, draftDate
+				 , documentType, name, documentNo, approvalDate , status, urgent
 			from
 			(
-			    select  approvalNo, fk_approver, fk_documentNo, approvalOrder
-			    from tbl_approval
-			    where APPROVALSTATUS != 0 and fk_approver = #{employeeNo}
-			) A JOIN tbl_document D
-			ON fk_documentNo = documentNo
-			JOIN tbl_employee
-			ON fk_employeeNo = employeeNo
-			where temp = 0
-			<choose>
-				<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
-			</choose>
-			<choose>
-				<when test='status != ""'> and D.status = #{status} </when>
-			</choose>
-			<choose>
-				<when test='documentType != ""'> and documentType = #{documentType} </when>
-			</choose>
-			order by documentNo desc
+				select approvalNo, fk_approver, fk_documentNo, approvalOrder, fk_employeeNo, subject, to_char(draftDate, 'yyyy-mm-dd') as draftDate
+					 , documentType, name, documentNo, to_char(approvalDate, 'yyyy-mm-dd') as approvalDate , D.status as status, urgent
+				from
+				(
+				    select  approvalNo, fk_approver, fk_documentNo, approvalOrder
+				    from tbl_approval
+				    where APPROVALSTATUS != 0 and fk_approver = to_number(#{employeeNo})
+				) A JOIN tbl_document D
+				ON fk_documentNo = documentNo
+				JOIN tbl_employee
+				ON fk_employeeNo = employeeNo
+				where temp = 0
+				<choose>
+					<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
+				</choose>
+				<choose>
+					<when test='status != ""'> and D.status = to_number(#{status}) </when>
+				</choose>
+				<choose>
+					<when test='documentType != ""'> and documentType = #{documentType} </when>
+				</choose>
+				order by D.documentNo desc
+			)
 		)
 		WHERE rno BETWEEN to_number(#{startRno}) AND to_number(#{endRno})
 	</select>
@@ -351,7 +356,7 @@
 		        (
 		            select fk_departmentno
 		            from tbl_employee
-		            where employeeNo = '100014'
+		            where employeeNo = to_number(#{employeeNo})
 		        ) E1 JOIN tbl_employee E2
 		    ON E1.fk_departmentNo = E2.fk_departmentno
 		) E JOIN tbl_document D
@@ -361,7 +366,7 @@
 			<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 		</choose>
 		<choose>
-			<when test='status != ""'> and status = #{status} </when>
+			<when test='status != ""'> and status = to_number(#{status}) </when>
 		</choose>
 		<choose>
 			<when test='documentType != ""'> and documentType = #{documentType} </when>
@@ -386,7 +391,7 @@
 				        (
 				            select fk_departmentno
 				            from tbl_employee
-				            where employeeNo = #{employeeNo}
+				            where employeeNo = to_number(#{employeeNo})
 				        ) E1 JOIN tbl_employee E2
 				    ON E1.fk_departmentNo = E2.fk_departmentno
 				) E JOIN tbl_document D
@@ -396,7 +401,7 @@
 					<when test='searchWord != ""'> and lower(subject) like '%'||lower(#{searchWord})||'%' </when>
 				</choose>
 				<choose>
-					<when test='status != ""'> and status = #{status} </when>
+					<when test='status != ""'> and status = to_number(#{status}) </when>
 				</choose>
 				<choose>
 					<when test='documentType != ""'> and documentType = #{documentType} </when>
@@ -506,14 +511,14 @@
 		ON FK_teamno = teamno
 		JOIN tbl_position
 		ON FK_positionNo = positionno
-		where employeeNo = #{employeeNo}
+		where employeeNo = to_number(#{employeeNo})
 	</select>
 	
 	
 	<!-- 결재 라인 승인자 추가하기 -->
 	<insert id="insertApprover" parameterType="HashMap">
 		insert into tbl_approval(APPROVALNO, FK_DOCUMENTNO, FK_APPROVER, APPROVALORDER, APPROVALSTATUS)
-		values(seq_approval.nextval, #{documentNo}, #{fk_approver}, #{approvalorder}, default)
+		values(seq_approval.nextval, #{documentNo}, to_number(#{fk_approver}), to_number(#{approvalorder}), default)
 	</insert>
 	
 
@@ -526,14 +531,14 @@
 	<!-- document 테이블에 데이터 입력 -->
 	<insert id="insertDocument" parameterType="HashMap">
 		insert into tbl_document(DOCUMENTNO, FK_EMPLOYEENO, SUBJECT, DRAFTDATE, TEMP, DOCUMENTTYPE, URGENT)
-		values(#{documentNo}, #{fk_employeeNo}, #{subject}, sysdate, #{temp}, #{documentType}, #{urgent})
+		values(#{documentNo}, to_number(#{fk_employeeNo}), #{subject}, sysdate, to_number(#{temp}), #{documentType}, to_number(#{urgent}))
 	</insert>
 	
 	
 	<!-- 휴가신청서 테이블에 데이터 입력 -->
 	<insert id="insertAnnualDraft" parameterType="HashMap">
 		insert into tbl_draft_annual(DOCUMENTNO, USEAMOUNT, REASON, STARTDATE, ENDDATE, ANNUALTYPE)
-		values(#{documentNo}, #{useAmount}, #{reason}, to_date(#{startDate}, 'yyyy-MM-dd'), to_date(#{endDate}, 'yyyy-MM-dd'), #{annualType})
+		values(#{documentNo}, to_number(#{useAmount}), #{reason}, to_date(#{startDate}, 'yyyy-MM-dd'), to_date(#{endDate}, 'yyyy-MM-dd'), to_number(#{annualType}))
 	</insert>
 	
 	
@@ -554,14 +559,14 @@
 	<!-- 업무기안 테이블에 데이터 입력 -->
 	<insert id="insertExpenseDraft" parameterType="HashMap">
 		insert into tbl_draft_expense(DOCUMENTNO, REASON, TOTALEXPENSEAMOUNT)
-		values(#{documentNo}, #{reason}, #{totalExpenseAmount})
+		values(#{documentNo}, #{reason}, to_number(#{totalExpenseAmount}))
 	</insert>
 	
 	
 	<!-- 결재 승인하기 -->
 	<update id="approve" parameterType="HashMap">
 		update tbl_approval set approvalStatus = 1, executiondate = sysdate
-		where fk_documentNo = #{documentNo} and fk_approver = #{employeeNo}
+		where fk_documentNo = #{documentNo} and fk_approver = to_number(#{employeeNo})
 	</update>
 	
 	
@@ -569,7 +574,7 @@
 	<select id="getApprovalOrder" parameterType="HashMap" resultType="Integer">
 		select approvalOrder
 		from tbl_approval
-		where fk_documentNo = #{documentNo} and fk_approver = #{employeeNo}
+		where fk_documentNo = #{documentNo} and fk_approver = to_number(#{employeeNo})
 	</select>
 	
 	
@@ -582,7 +587,7 @@
 	
 	<update id="reject" parameterType="HashMap">
 		update tbl_approval set approvalStatus = 2, executiondate = sysdate
-		where fk_documentNo = #{documentNo} and fk_approver = #{employeeNo}
+		where fk_documentNo = #{documentNo} and fk_approver = to_number(#{employeeNo})
 	</update>
 	
 	
@@ -605,7 +610,7 @@
 	
 	<!-- 휴가신청서 잔여 연차 가져오기 -->
 	<select id="getAnnual" parameterType="HashMap" resultType="Integer">
-		select occurannual + overannual - addannual - (
+		select occurannual + overannual + addannual - nvl( (
         
 			select sum(useamount) as usedAnnual
 			from tbl_document D join tbl_draft_annual A
@@ -613,10 +618,10 @@
 			where fk_employeeno = to_number(#{employeeNo})
 			and to_char(startdate, 'yyyy') = #{year}
 			and D.status = 1
-			group by to_char(startdate, 'yyyy')	) as totalAmount
+			group by to_char(startdate, 'yyyy')	) ,0) as totalAmount
 	
 		from tbl_annual
-		where fk_employeeNo = #{employeeNo} and year = #{year}
+		where fk_employeeNo = to_number(#{employeeNo}) and year = #{year}
 		
 		UNION ALL
 		
@@ -626,7 +631,7 @@
 		(
 			select occurannual + overannual - addannual as totalAmount
 			from tbl_annual
-			where fk_employeeNo = #{employeeNo} and year = #{year}
+			where fk_employeeNo = to_number(#{employeeNo}) and year = #{year}
 		)
 	</select>
 	
@@ -642,7 +647,7 @@
 	<select id="checkAnuualOverlap" parameterType="HashMap" resultType="Integer">
 		select count(*)
 		from tbl_commute
-		where rest in (1,2,3) and fk_employeeNo = #{fk_employeeNo} and workdate between #{startDate} and #{endDate}
+		where rest in (1,2,3) and fk_employeeNo = to_number(#{fk_employeeNo}) and workdate between #{startDate} and #{endDate}
 	</select>
 	
 	
@@ -651,21 +656,21 @@
 		select count(*)
 		from tbl_draft_overtime O JOIN tbl_document D
 		ON O.documentNo = D.documentNo
-		where fk_employeeNo = #{fk_employeeNo} and overtimeDate = #{overtimeDate}
+		where fk_employeeNo = to_number(#{fk_employeeNo}) and overtimeDate = #{overtimeDate}
 	</select>
 	
 	
 	<!-- 연장근무신청서 승인 시 근태 테이블에 데이터 update -->
 	<update id="updateCommuteWithOvertime" parameterType="HashMap">
-		update tbl_commute set overTimeYN = 0
-		where fk_employeeNo = #{fk_employeeNo} and workdate = #{overtimeDate};
+		update tbl_commute set overTimeYN = 1
+		where fk_employeeNo = to_number(#{fk_employeeNo}) and workdate = #{overtimeDate}
 	</update>
 	
 	
 	<!-- 연장근무신청서 승인 시 근태 테이블에 데이터 insert -->
 	<insert id="insertCommuteWithOvertime" parameterType="HashMap">
-		insert into tbl_commute(commuteNo, FK_employeeNo, status, rest, overTimeYN, workdate)
-		values(commuteSeq.nextval, to_number(#{fk_employeeNo}), to_number('6'), to_number('0'), to_number('1'), #{overtimeDate})
+		insert into tbl_commute(commuteNo, FK_employeeNo, status, rest, overTimeYN, workdate, starttime)
+		values(commuteSeq.nextval, to_number(#{fk_employeeNo}), to_number('6'), to_number('0'), to_number('1'), #{overtimeDate}, to_date(#{overtimeDate},'yyyy-mm-dd'))
 	</insert>
 	
 	
@@ -673,7 +678,7 @@
 	<select id="checkVacationCalendar" parameterType="String" resultType="Integer">
 		select SMCATGONO
 		from TBL_CALENDAR_SMALL_CATEGORY
-		where FK_LGCATGONO = 1 and SMCATGONAME = '휴가' and fk_employeeNo = ${fk_employeeNo}
+		where FK_LGCATGONO = 1 and SMCATGONAME = '휴가' and fk_employeeNo = to_number(${fk_employeeNo})
 		
 		UNION ALL
 		
@@ -683,7 +688,7 @@
 		(
 			select SMCATGONO
 			from TBL_CALENDAR_SMALL_CATEGORY
-			where FK_LGCATGONO = 1 and SMCATGONAME = '휴가' and fk_employeeNo = ${fk_employeeNo}
+			where FK_LGCATGONO = 1 and SMCATGONAME = '휴가' and fk_employeeNo = to_number(${fk_employeeNo})
 		)
 	</select>
 	
@@ -698,21 +703,21 @@
 	<!-- 휴가 캘린더 생성하기 -->
 	<insert id="createVacationCalendar" parameterType="HashMap">
 		insert into TBL_CALENDAR_SMALL_CATEGORY(SMCATGONO, FK_LGCATGONO, SMCATGONAME, FK_EMPLOYEENO)
-		values(#{smcatgono}, 1, '휴가', #{fk_employeeNo})
+		values(to_number(#{smcatgono}), 1, '휴가', to_number(#{fk_employeeNo}))
 	</insert>
 	
 	
 	<!-- 휴가 스케쥴 생성하기 -->
 	<insert id="createVacationSchedule" parameterType="HashMap">
 		insert into TBL_CALENDAR_SCHEDULE(SCHEDULENO, STARTDATE, ENDDATE, SUBJECT, COLOR, FK_SMCATGONO, FK_LGCATGONO, FK_EMPLOYEENO)
-		values(seq_scheduleno.nextval, to_date(#{startDate}, 'yyyy-mm-dd hh24:mi'), to_date(#{endDate}, 'yyyy-mm-dd hh24:mi'), '연차', '#009900', #{smcatgono}, 1, #{fk_employeeNo})
+		values(seq_scheduleno.nextval, to_date(#{startDate}, 'yyyy-mm-dd hh24:mi'), to_date(#{endDate}, 'yyyy-mm-dd hh24:mi'), '연차', '#009900', to_number(#{smcatgono}), 1, to_number(#{fk_employeeNo}))
 	</insert>
 	
 	
 	<!-- 지출 품의 상세 insert -->
 	<insert id="insertExpenseDetail" parameterType="HashMap">
 		insert into TBL_EXPENSE_DETAIL(EXPENSEDETAILNO, FK_DOCUMENTNO, AMOUNT, USEDATE, TYPE, CONTENT, NOTE)
-		values(seq_expensedetail.nextval, '${documentNo}', ${amount}, to_date('${useDate}', 'yyyy-mm-dd'), ${type}, ${content}, ${note})
+		values(seq_expensedetail.nextval, '${documentNo}', to_number(${amount}), to_date('${useDate}', 'yyyy-mm-dd'), '${type}', '${content}', '${note}')
 	</insert>
 	
 	
@@ -744,7 +749,7 @@
 		    (
 		        select  approvalNo, fk_approver, fk_documentNo, approvalOrder
 		        from tbl_approval
-		        where APPROVALSTATUS != 0 and fk_approver = #{employeeno}
+		        where APPROVALSTATUS != 0 and fk_approver = to_number(#{employeeNo})
 		    ) A JOIN tbl_document D
 		    ON fk_documentNo = documentNo
 		    JOIN tbl_employee

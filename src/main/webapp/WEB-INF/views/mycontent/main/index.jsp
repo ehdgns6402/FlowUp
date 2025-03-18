@@ -60,10 +60,15 @@ tr.tbodyTr:nth-child(even){
             	</div>
             	
             	
-            	<div class="search_contents">
+            	<div class="search_contents" style="overflow-y: scroll;">
             		<div class="search_contents_inner">
-            		
+            			
+            			<!-- 여기에 검색결과 들어옴 -->
+            			
             		</div>
+            		
+            		
+            		
             	</div>
             	
             </div>
@@ -528,6 +533,9 @@ tr.tbodyTr:nth-child(even){
         		alert('검색어를 입력해주세요.')
         	}
         	else {
+        		$('.search_contents_inner').empty();
+        		v_html = ``;
+        		
         		$('.search-wrapper').css({
         			'top':'12%'
         		})
@@ -551,6 +559,9 @@ tr.tbodyTr:nth-child(even){
         		searchBoard();		// 게시판
         		searchDocument();	// 전자결재
         		searchCalendar();	// 캘린더
+        		
+        		
+        		$('.search_contents_inner').append(v_html);
         	}
         	
         }
@@ -575,6 +586,7 @@ tr.tbodyTr:nth-child(even){
 	    	data: {"fk_employeeNo": ${sessionScope.loginuser.employeeNo} },
 	    	type:"get",
 	    	dataType:"json",
+	    	async: false ,
 	    	success:function(json){
 	    		console.log(JSON.stringify(json));
 	    		// [{"DIRECTCALL":"0211115555","PHONENO":"01010102020","ADRSBNO":"100061","name":"이순신","DEPARTMENT":"IT","RANK":"대리","EMAIL":"lee2@naver.com","COMPANY":"삼성"}]
@@ -627,8 +639,48 @@ tr.tbodyTr:nth-child(even){
 	    	type:"get",
 	    	dataType:"json",
 	    	success:function(json){
-	    		console.log("메일 검색 확인 : "+JSON.stringify(json))
+	    		// console.log("메일 검색 확인 : "+JSON.stringify(json))
+	    		/*
+	    			{"mailNo":108064,"subject":"입니다파일파일파일","content":"ㅁㄴㄹㅈ","readStatus":"1","deleteStatus":"0","saveStatus":"0"
+	    			,"importantStatus":"1","sendDate":"2025-03-16 11:58","fk_employeeNo":"100013","referencedVO":null
+	    			,"employeevo":{"employeeNo":"100013","passwd":null,"name":"이상우","securityLevel":null,"email":null,"mobile":null
+	    				,"directCall":null,"bank":null,"account":null,"registerDate":null,"status":null,"lastDate":null
+	    				,"reasonForLeaving":null,"birth":null,"profileImg":null,"lastPweChange":null,"motive":null,"address":null
+	    				,"departmentName":null,"teamName":null,"positionName":null,"requireLastChangePwd":false,"attach":null,"fileSize":null
+	    				,"fileName":null,"fk_departmentNo":null,"fk_positionNo":null,"fk_teamNo":null},"fileSize":null,"mailfilevo":[]}
+	    		*/
 	    		
+	    		v_html += `<div style="margin-bottom:20px; border-bottom: 1px solid #999;">
+					<div style="font-size:16px; font-weight: 600; margin-bottom: 16px;">mail</div>`;
+		
+				if(json.length == 0) {
+					v_html += `<div style="margin-bottom:16px;">
+									<div style="font-size:14px; color: #999;">mail 검색결과가 없습니다.</div>
+							   </div>`;
+   	    		}
+				else{
+					$.each(json, function(index, item){
+			
+			    		v_html += `
+			    			<div style="margin-bottom:16px;">
+			    				<a href="#">
+			        				<div style="margin-bottom: 4px;">
+			        					<span style="font-size:14px; font-weight: 500;">\${item.subject}</span> 
+			        					<span style="font-size:12px; color: #999;">\${item.sendDate}</span>
+			        				</div>
+			        				<div style="font-size:14px; color:#999">
+			        					\${item.content}
+			        				</div>
+			        				<div style="font-size:12px; color:#999">
+			        					 \${item.name}
+			        				</div>
+			    				</a>
+			    			</div>
+			    			
+			    		`;
+					})
+				}
+				v_html += `</div>`;
 	    		
 	    		
 	    		
@@ -652,7 +704,51 @@ tr.tbodyTr:nth-child(even){
 	    	type:"get",
 	    	dataType:"json",
 	    	success:function(json){
-	    		console.log("게시판 검색 확인 : "+JSON.stringify(json))
+	    		// console.log("게시판 검색 확인 : "+JSON.stringify(json))
+	    		/*
+	    			[{"postNo":"100337","fk_boardNo":"100082","fk_employeeNo":"100013","name":"이상우","subject":"효율적인 영업 보고서 작성법"
+	    				,"content":"간결한 데이터 정리 및 시각화 활용고객별 주요 이슈 요약 정리개선 방안 및 향후 전략 포함","readCount":"0","regDate":"2025-03-16 21:23:53"
+	    				,"commentCount":"0","allowComments":"1","status":null,"isNotice":"0","noticeEndDate":null,"likeCount":"1","previouspostNo":null
+	    				,"previoussubject":null,"previousname":null,"previousregDate":null,"previousreadCount":null,"previouslikeCount":null,"nextpostNo":null
+	    				,"nextsubject":null,"nextname":null,"nextregDate":null,"nextreadCount":null,"nextlikeCount":null,"currentDate":"2025-03-17 10:27:16"
+	    				,"profileImg":null,"positionName":"상무","liked":false,"login_userid":null,"login_userName":null,"fileName":null
+	    				,"boardvo":{"boardNo":"100082","boardName":"영업·물류 게시판","boardDesc":null,"isPublic":null,"createdBy":"서영학","createdAt":null,"status":null}
+	    			    ,"postfilevo":null}]
+	    		*/
+	    		
+	    		v_html += `<div style="margin-bottom:20px; border-bottom: 1px solid #999;">
+	    					<div style="font-size:16px; font-weight: 600; margin-bottom: 16px;">board</div>`;
+	    		
+				if(json.length == 0) {
+					v_html += `<div style="margin-bottom:16px;">
+									<div style="font-size:14px; color: #999;">board 검색결과가 없습니다.</div>
+							   </div>`;
+   	    		}
+				else{
+		    		$.each(json, function(index, item){
+	
+			    		v_html += `
+		        			<div style="margin-bottom:16px;">
+		        				<a href="#">
+		            				<div style="margin-bottom: 4px;">
+		            					<span style="font-size:14px; font-weight: 500;">\${item.subject}</span> 
+		            					<span style="font-size:12px; color: #999;">\${item.regDate}</span>
+		            				</div>
+		            				<div style="font-size:14px; color:#999">
+		            					\${item.content}
+		            				</div>
+		            				<div style="font-size:12px; color:#999">
+		            					 \${item.name} | \${item.positionName}
+		            				</div>
+		        				</a>
+		        			</div>
+		        			
+			    		`;
+		    		})
+				}
+	    		v_html += `</div>`;
+	    		
+	    		$('.search_contents_inner').append(v_html);
 	    		
 	    	},
 			error: function(request, status, error){
@@ -674,6 +770,46 @@ tr.tbodyTr:nth-child(even){
 	    	dataType:"json",
 	    	success:function(json){
 	    		console.log("전자결재 검색 확인 : "+JSON.stringify(json))
+	    		/*
+	    			{"documentNo":"2025-100181","fk_employeeNo":"100014","subject":"연차"
+	    			,"draftDate":"2025-03-17","approvalDate":"2025-03-17","status":"1","securityLevel":null
+	    			,"temp":null,"documentType":"휴가신청서","name":"김성훈","positionName":null,"urgent":"0"}
+	    		*/
+	    		
+	    		v_html += `<div style="margin-bottom:20px; border-bottom: 1px solid #999;">
+					<div style="font-size:16px; font-weight: 600; margin-bottom: 16px;">document</div>`;
+		
+				if(json.length == 0) {
+					v_html += `<div style="margin-bottom:16px;">
+									<div style="font-size:14px; color: #999;">document 검색결과가 없습니다.</div>
+							   </div>`;
+	    		}
+				else{	
+					$.each(json, function(index, item){
+			
+			    		v_html += `
+			    			<div style="margin-bottom:16px;">
+			    				<a href="#">
+			        				<div style="margin-bottom: 4px;">
+			        					<span style="font-size:14px; font-weight: 500;">\${item.subject}</span> 
+			        					<span style="font-size:12px; color: #999;">\${item.approvalDate}</span>
+			        				</div>
+			        				<div style="font-size:14px; color:#999">
+			        					\${item.documentType}
+			        				</div>
+			        				<div style="font-size:12px; color:#999">
+			        					 \${item.name} | \${item.SMCATGONAME}
+			        				</div>
+			    				</a>
+			    			</div>
+			    			
+			    		`;
+					})
+				}
+				
+				v_html += `</div>`;
+	    		
+	    		
 	    		
 	    	},
 			error: function(request, status, error){
@@ -695,6 +831,55 @@ tr.tbodyTr:nth-child(even){
 	    	dataType:"json",
 	    	success:function(json){
 	    		console.log("캘린더 검색 확인 : "+JSON.stringify(json))
+	    		/*
+	    			[{"STARTDATE":"2025-03-14 00:00","LGCATGONAME":"대분류1","SUBJECT":"daa","CONTENT":"dsadsa","SMCATGONAME":"비밀일정"
+	    				,"SCHEDULENO":"31","ENDDATE":"2025-03-14 23:30","NAME":"강이훈"},{"STARTDATE":"2025-03-14 00:00","LGCATGONAME":"대분류1"
+	    					,"SUBJECT":"aa","CONTENT":"ds","SMCATGONAME":"비밀일정","SCHEDULENO":"29","ENDDATE":"2025-03-14 23:30","NAME":"강이훈"}]
+	    		*/
+	    		
+		    		v_html += `<div style="margin-bottom:20px; border-bottom: 1px solid #999;">
+		    					<div style="font-size:16px; font-weight: 600; margin-bottom: 16px;">calendar</div>`;
+		    		
+  					if(json.length == 0) {
+  						v_html += `<div style="margin-bottom:16px;">
+  										<div style="font-size:14px; color: #999;">calendar 검색결과가 없습니다.</div>
+  								   </div>`;
+  		    		}
+  					else{		
+			    		$.each(json, function(index, item){
+			    			let content;
+			    			
+			    			if(item.CONTENT == null){
+			    				content = '등록된 내용이 없습니다.'
+			    			}
+			    			else{
+			    				content = item.CONTENT;
+			    			}
+		
+				    		v_html += `
+			        			<div style="margin-bottom:16px;">
+			        				<a href="#">
+			            				<div style="margin-bottom: 4px;">
+			            					<span style="font-size:14px; font-weight: 500;">\${item.SUBJECT}</span> 
+			            					<span style="font-size:12px; color: #999;">\${item.STARTDATE} - \${item.ENDDATE}</span>
+			            				</div>
+			            				<div style="font-size:14px; color:#999">
+			            					\${content}
+			            				</div>
+			            				<div style="font-size:12px; color:#999">
+			            					 \${item.NAME} | \${item.SMCATGONAME}
+			            				</div>
+			        				</a>
+			        			</div>
+			        			
+				    		`;
+			    		})
+  					}
+		    		v_html += `</div>`;
+	    		
+	    		
+	    		
+	    		
 	    		
 	    	},
 			error: function(request, status, error){

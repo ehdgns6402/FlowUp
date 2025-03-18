@@ -5,8 +5,9 @@
    //     /flowUp
 %>  
 
-
 <jsp:include page="../../header/header.jsp" />
+<jsp:include page="./myPageLeftBar.jsp" />
+
 <link href="<%=ctxPath%>/css/employeeCss/updateEmployee_by_addmin.css" rel="stylesheet"> 
 
 <script type="text/javascript">
@@ -148,21 +149,21 @@
 </script>
 
 
-<div id="container">
+<div style="margin:0 1.5%;">
 	<div class="content_title">
 		<h4>관리자의 사원 정보 수정</h4>
 	</div>
 	<div id="content">
 		<form name = "updateEmployee_by_addmin">
 		
-			<select class="search_type">
+			<!-- <select class="search_type">
 				<option>사번</option>
 				<option>팀</option>
 				<option>부서</option>
 				<option>이름</option>
-			</select>
-			<input type=text/>
-			<button class="search_employee">검색</button>
+			</select> -->
+			<!-- <input type=text/>
+			<button class="search_employee">검색</button> -->
 			
 			<div class="table_content"></div>
 		 <a href="<%= ctxPath%>/employee/mypage"id="noAddEmployee">사원등록취소</a>

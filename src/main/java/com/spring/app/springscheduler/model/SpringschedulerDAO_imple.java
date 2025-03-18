@@ -75,7 +75,7 @@ public class SpringschedulerDAO_imple implements SpringschedulerDAO {
 	}
 
 	@Override
-	public void scheduler_monthly_payment_insert(Map<String, String> empAnnaulMap) {
+	public void scheduler_monthly_payment_insert(Map<String, String> empAnnaulMap) throws Exception {
 		sqlsession.insert("springscheduler.scheduler_monthly_payment_insert",empAnnaulMap);
 	}
 

@@ -249,6 +249,7 @@
       where employeeno = #{employeeNo}
  </update>
  
+ 
  <insert id="addGroupOptionEnd" parameterType="GroupVO">
  	insert into tbl_group(groupno,fk_employeeno,GROUPNAME)
 	values(groupno.nextval,to_number(#{g_fk_employee}),#{groupname})

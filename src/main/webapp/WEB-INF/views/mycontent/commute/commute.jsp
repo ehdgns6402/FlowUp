@@ -357,7 +357,15 @@ div.hoverDiv:hover {
     					
         	for(let k=0; k<144; k++) {
         		
-        		html += `<td style="height:30px;" class="\${k}"></td>`;	// td
+        		if( k % 6 == 0 ) {
+					html += `<td style="height:20px; border: solid #e6e6e6; border-width: 0px 0px 0px 1px" class="\${k}"></td>`;
+				}
+				else if( k % 6 == 5 ) {
+					html += `<td style="height:20px; border: solid #e6e6e6; border-width: 0px 1px 0px 0px" class="\${k}"></td>`;
+				}
+				else {
+					html += `<td style="height:20px; border: solid #e6e6e6 0px" class="\${k}"></td>`;
+				}
         		
         	}
         	
@@ -421,7 +429,9 @@ div.hoverDiv:hover {
 																				                 //		   |00시 	   |01시 					
 					const startCell = Number(starthour) * 6 + Math.ceil(Number(startmin)/10); // 01:19 라면 |1|2|3|4|5|6|7|@@@@@@@@@@@@@        => 8
 					const endCell = Number(endhour) * 6 + Math.floor(Number(endmin)/10);   // 18:41 라면 @@@@@@@@@@@@@|@@@@@@@@@@@@@|@@@@@@@@@@@@|113|114|115|  => 112
-					                  
+					     
+
+					
 					const totalCellCnt = endCell - startCell +1;                                              
 				
 					let v_html = ``;
@@ -429,9 +439,7 @@ div.hoverDiv:hover {
 					for(let k=0; k<144; k++) {
 						
 		        		
-						if(k == startCell && totalCellCnt > 0) {
-							
-							
+						if(k == startCell && totalCellCnt > 0 && startCell != endCell) {
 							
 							v_html += `<td colspan="\${totalCellCnt}" style="height:20px; border: solid 0px;">
 											<div title="출근시간 : \${starthour}:\${startmin}\n퇴근시간 : \${endhour}:\${endmin}" style="width: 100%%; height: 100%;background-color: #99ccff; margin:0 auto; z-index:100; border-radius:50px; text-align:center; color:white; font-size:10pt; line-height:20px;">업무</div>
@@ -598,9 +606,6 @@ div.hoverDiv:hover {
 		
 		frm.year_month.value = year_month;
 		frm.fk_employeeNo.value = '${sessionScope.loginuser.employeeNo}';
-		
-		
-		console.log(frm.fk_employeeNo.value);
 		
 		frm.method = "post";
 		frm.action = "<%=ctxPath%>/commute/downloadExcel";

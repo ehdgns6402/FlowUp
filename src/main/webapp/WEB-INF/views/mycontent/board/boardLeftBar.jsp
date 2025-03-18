@@ -116,10 +116,10 @@ $(document).ready(function() {
 	                <li>
             	   		<a href='<%=ctxpath%>/board/selectPostBoardGroupView?boardNo=\${board.boardNo}'>`+board.boardName+`</a>  <%-- 게시판명 --%>
 			            <a href='<%=ctxpath%>/board/updateBoardView?boardNo=\${board.boardNo}' class='upateBoard settingBtn'>
-			                <i class="fa-solid fa-gear" style="margin-right:9px;"></i> <%-- 게시판 수정 아이콘 --%> 
+			                <i class="fa-solid fa-gear updateGear" style="margin-right:9px;"></i> <%-- 게시판 수정 아이콘 --%> 
 		                </a>
 		                
-		                <i class="fa-regular fa-trash-can disableBoardIcon settingBtn" data-boardno="\${board.boardNo}"></i> <%-- 게시판 삭제 아이콘 --%>
+		                <i class="fa-regular fa-trash-can disableBoardIcon deleteTrash settingBtn" data-boardno="\${board.boardNo}"></i> <%-- 게시판 삭제 아이콘 --%>
 	                </li>`; 
             });
             $(".board_menu_container ul li").not(":first").remove(); // 첫 번째 항목 제외하고 삭제

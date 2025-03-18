@@ -296,7 +296,7 @@ public class DocumentService_imple implements DocumentService {
 			}
 			else if("지출품의서".equals(paraMap.get("documentType"))) {
 				m = mapper_dao.insertExpenseDraft(paraMap);
-				System.out.println("m 은" + m);
+				System.out.println(paraMap.get("expense_detail_count"));
 				int expense_detail_count = Integer.parseInt(paraMap.get("expense_detail_count"));
 				for(int i = 0; i < expense_detail_count; i++) {
 					paraMap.put("amount", paraMap.get("amount" + i));
@@ -415,6 +415,7 @@ public class DocumentService_imple implements DocumentService {
 				String today = localDate.format(dateTimeFormatter);
 				
 				if(today.equals(document.get("overtimeDate"))) {
+					System.out.println(document.get("overtimeDate"));
 					// 연장 근무 신청 일자가 오늘이라면
 					mapper_dao.updateCommuteWithOvertime(document);
 				}

@@ -94,12 +94,16 @@
 
       <div class="board_menu_container">
           <ul>
+          	<li>
+          		  <a href="<%= ctxpath%>/employee/mypage">내정보</a>
+          	  </li>
           	  <li>
           		  <a href="#">비밀번호 변경</a>
           	  </li>
+          	  
            	  
            	  <c:if test="${sessionScope.loginuser.securityLevel == 10}">
-			      <a href="<%= ctxpath%>/employee/admin" id="writePostBtn">
+			      <a href="<%= ctxpath%>/employee/admin" id="writePostBtn" style="margin-top:10px;">
 			          <i class="fa-solid fa-user"></i>
 			          <span id="goWrite">관리자페이지</span>
 			      </a>

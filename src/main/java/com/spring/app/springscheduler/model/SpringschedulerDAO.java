@@ -28,9 +28,9 @@ public interface SpringschedulerDAO {
 
 	List<Map<String, String>> getEmpAnnualInfo();
 
-	void scheduler_monthly_payment_insert(Map<String, String> empAnnaulMap);
+	void scheduler_monthly_payment_insert(Map<String, String> empAnnaulMap) throws Exception;
 
-	String getWorkRange(Map<String, String> empAnnaulMap);
+	String getWorkRange(Map<String, String> empAnnaulMap) ;
 
 	
 

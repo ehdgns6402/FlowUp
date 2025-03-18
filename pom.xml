@@ -367,11 +367,6 @@
 
 <!-- ======================= 라이브러리 추가 끝 ======================= -->
 
-		<dependency>
-			<groupId>com.spring</groupId>
-			<artifactId>flowUp</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<build>

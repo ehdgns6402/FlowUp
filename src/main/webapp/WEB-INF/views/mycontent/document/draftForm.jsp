@@ -710,9 +710,6 @@
 			return;
 		}
 		
-		let no = $("tbody.expense_detail tr").length/2;
-		$("input[name='expense_detail_count']").val(no);
-		
 		draft(); // 결재 요청하기
 		
 	} // end of function overtimeDraft(){}---------------------------------------------
@@ -757,7 +754,7 @@
 			let html = `<tr>
 							<td><input type="date" class="useDate"	name="useDate\${no}" onkeydown="return false" style="width: 100%;"/></td>
 							<td><input type="text" class="type"		name="type\${no}" style="width: 100%;"/></td>
-							<td><input type="number" class="amount" name="amount\${no}" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
+							<td><input type="number" class="amount" name="amount\${no}" value="0" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
 							<td><input type="text" class="content" name="content\${no}" style="width: 100%;"/></td>
 							<td><input type="text" class="note"	 name="note\${no}" style="width: 100%;"/></td>
 						</tr>`;
@@ -767,6 +764,9 @@
 		else {
 			alert("더 이상 추가할 수 없습니다.");
 		}
+		
+		no = $("tbody.expense_detail tr").length;
+		$("input[name='expense_detail_count']").val(no);
 	}
 	
 	<%-- 지출 내역 삭제하기 --%>
@@ -777,6 +777,9 @@
 		else {
 			alert("더 이상 삭제할 수 없습니다.");
 		}
+		
+		let no = $("tbody.expense_detail tr").length;
+		$("input[name='expense_detail_count']").val(no);
 	}
 	
 	
@@ -1341,7 +1344,7 @@
 								<tr>
 									<td><input type="date" class="useDate" name="useDate0" onkeydown="return false" style="width: 100%;"/></td>
 									<td><input type="text" class="type" name="type0" style="width: 100%;"/></td>
-									<td><input type="number" class="amount" name="amount0" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
+									<td><input type="number" class="amount" name="amount0" value="0" onchange="check_amount(this)" onkeyup="check_amount(this)" style="width: 100%;"/></td>
 									<td><input type="text" class="content" name="content0" style="width: 100%;"/></td>
 									<td><input type="text" class="note" name="note0" style="width: 100%;"/></td>
 								</tr>

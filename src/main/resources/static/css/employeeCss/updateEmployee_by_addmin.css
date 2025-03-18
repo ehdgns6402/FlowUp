@@ -2,7 +2,7 @@
 
 #container{
 	margin: 0 auto;
-	width: 90%;
+	width: 100%;
 	height: auto;
 	/* text-align: center; */
 }
@@ -14,7 +14,7 @@
 }
 
 #content{
-	margin-top: 10%;
+	margin-top: 2%;
 }
 
 
@@ -45,7 +45,7 @@ th{
 
 td{
 	text-align: center;
-	padding : 2%;
+	padding : 1%;
 
 }
 

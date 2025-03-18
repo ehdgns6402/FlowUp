@@ -816,7 +816,7 @@
 		    JOIN tbl_employee E ON P.fk_employeeNo = E.employeeNo
 		    JOIN tbl_position PS ON E.FK_positionNo = PS.positionNo
 		) V
-		 WHERE lower(subject) like '%'||lower('영업')||'%' 
+		 WHERE lower(subject) like '%'||lower(#{searchWord})||'%' 
 	</select>
 
 

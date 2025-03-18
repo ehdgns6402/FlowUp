@@ -215,6 +215,12 @@ td {
 	display:inline-block;
 	margin-left: auto;
 }
+.updateGear:hover{
+	color: #c8c8c8;
+}
+.deleteTrash:hover{
+	color: #c8c8c8;
+}
 
 
 

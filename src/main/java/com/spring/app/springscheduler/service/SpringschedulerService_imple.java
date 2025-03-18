@@ -183,8 +183,11 @@ public class SpringschedulerService_imple implements SpringschedulerService {
 			String workRange = dao.getWorkRange(empAnnaulMap);
 			empAnnaulMap.put("workRange", workRange);
 			
+			try {
+				dao.scheduler_monthly_payment_insert(empAnnaulMap);
+			} catch (Exception e) {}
+				
 			
-			dao.scheduler_monthly_payment_insert(empAnnaulMap);
 			
 		}
 		

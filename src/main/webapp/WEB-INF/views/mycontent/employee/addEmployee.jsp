@@ -9,6 +9,7 @@
 
 
 <jsp:include page="../../header/header.jsp" />
+<jsp:include page="./myPageLeftBar.jsp" />
 
 <link href="<%=ctxPath%>/css/employeeCss/addEmployee.css" rel="stylesheet"> 
  

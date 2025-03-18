@@ -707,9 +707,11 @@ WHERE A.fk_employeeno = 111111
   AND B.groupNo = 100002;
 
 select *
-from tbl_employee;
+from tbl_employee
+order by employeeno desc;
 
 
-
+select * from tbl_team;
+select * from tbl_department;
 
 select * from tbl_group;

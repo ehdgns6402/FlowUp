@@ -81,7 +81,7 @@
       <!-- === 글작성 버튼 === -->
       <button id="writePostBtn">
           <i class="fas fa-address-book"></i>
-          <span id="goWrite">연락처 추가</span>
+          <span id="goWrite">주소록 추가</span>
       </button>
       <!-- === 글작성 버튼 === -->
 
@@ -91,7 +91,7 @@
                   <a href="<%= ctxpath%>/employee/addressBook">주소록</a>
               </li>
               <li>
-              	<a href="<%= ctxpath%>/employee/departmentAddressBook">부서 주소록</a>
+              	<a href="<%= ctxpath%>/employee/departmentAddressBook">내부 주소록</a>
               </li>
           	  <li>
           		  <a href="<%= ctxpath%>/employee/external_addressbook">외부 주소록</a>

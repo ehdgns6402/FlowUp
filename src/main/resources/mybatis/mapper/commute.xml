@@ -28,7 +28,7 @@
    	</update>
    	
    	<update id="statusChange" parameterType="HashMap">
-   		update tbl_commute set status = #{status}
+   		update tbl_commute set status = to_number(#{status})
    		where fk_employeeNo = to_number(#{fk_employeeNo}) and (starttime BETWEEN trunc(sysdate) and trunc(sysdate)+0.9999)
    	</update>
    	
@@ -82,22 +82,24 @@
    		<result property="dt" column="dt" javaType="String" />
    		<result property="worksec" column="worksec" javaType="String" />
    		<result property="rest" column="rest" javaType="String" />
+   		<result property="overtimeYN" column="overtimeYN" javaType="String" />
    	</resultMap>
 	<select id="getMontWorkInfo_allday" parameterType="HashMap"  resultMap="getMontWorkInfo_alldayMap">
 		SELECT to_char( b.dt, 'yyyy-mm-dd' ) as dt
 		     , NVL( to_char(starttime, 'hh24:mi:ss') , '00:00:00') as starttime
 		     , NVL( to_char(endtime, 'hh24:mi:ss') , '00:00:00') as endtime
 		     , nvl( trunc((endtime - starttime) * 24 * 60 * 60) , 0) as worksec
-		     , rest
+		     , rest, overtimeYN
 		FROM 
 		(
 		    SELECT trunc(starttime) as dtt
 		         , starttime
 		         , endtime
 		         , rest
+		         , overtimeYN
 		    FROM tbl_commute
 		    WHERE fk_employeeno = to_number(#{fk_employeeNo})
-		          and to_char(starttime, 'yyyy-mm') = #{year_month}
+		          and substr(workdate,1,7) = #{year_month}
 		)a 
 		right join
 		( 
@@ -300,7 +302,7 @@
 			from
 			(
 			select employeeNo
-	             , case when sysdate - to_date( to_char(sysdate, 'yyyy') || to_char(registerDate,'mmdd'), 'yyyymmdd') >= 0
+	             , case when sysdate - to_date( to_char(sysdate, 'yyyy') || to_char(registerDate,'mmdd'), 'yyyymmdd') &gt;= 0
                     then extract(year from sysdate) - to_number( to_char(registerDate,'yyyy') ) + 1
                     else extract(year from sysdate) - to_number( to_char(registerDate,'yyyy') ) 
                     end AS workYear
@@ -415,7 +417,7 @@
 			        FK_EMPLOYEENO,
 			        MONTH,
 			        YEAR,
-			        CASE WHEN WEEKLY_SECONDS > 144000 THEN WEEKLY_SECONDS - 144000 ELSE 0 END AS OVERTIME_SECONDS
+			        CASE WHEN WEEKLY_SECONDS &gt; 144000 THEN WEEKLY_SECONDS - 144000 ELSE 0 END AS OVERTIME_SECONDS
 			    FROM WEEKLY_WORK
 			)
 			SELECT
@@ -431,7 +433,7 @@
 			)O
 			right join tbl_salary S
 			on (O.FK_EMPLOYEENO || O.MONTH) = (S.FK_EMPLOYEENO || substr(S.workrange,1,7))
-			WHERE S.FK_EMPLOYEENO = to_number(#{employeeNo}) AND O.YEAR = to_number(#{year})
+			WHERE S.FK_EMPLOYEENO = to_number(#{employeeNo}) AND O.YEAR = #{year}
 		)
 	    WHERE rno between to_number(#{startRno}) and to_number(#{endRno})
    	</select>

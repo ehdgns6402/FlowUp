@@ -468,19 +468,22 @@ public class EmployeeController {
 																			 @RequestParam String groupname) {
 
 		int n = service.addGroupOptionEnd(gvo, g_fk_employee,groupname);
-		String view_page ="";
 		
-		System.out.println("n:"+n);
-		if(n==1) {
-			System.out.println("그룹옵션추가완료");
-		}
-		
-		else {
-			System.out.println("그룹옵션추가실패");
-		}
+		  String view_page ="";
+		  
+		  System.out.println("n:"+n); 
+		  if(n==1) { 
+			  System.out.println("그룹옵션추가완료"); 
+			  }
+		  
+		  else {
+			  System.out.println("그룹옵션추가실패"); 
+			  }
+		 
 		
 		return view_page;
 	}
+	
 	
 	
 	@GetMapping("groupNo_and_groupName_select")

@@ -1134,6 +1134,11 @@ public class DocumentController {
 		List<ApprovalVO> approvalList = service.getApprovalList(paraMap.get("documentNo"));
 		// 문서함에서 보여줄 결재자 리스트 가져오기
 		
+		if("지출품의서".equals(documentType)) {
+			List<Map<String, String>> expenseDetailList = service.expenseDetailList(paraMap);
+			mav.addObject("expenseDetailList", expenseDetailList);
+		}
+		
 		mav.addObject("documentType", document.get("documentType"));
 		mav.addObject("document", document);
 		mav.addObject("approvalList", approvalList);
